@@ -145,10 +145,10 @@ class Logger
     public function readSystemLogs()
     {       
         $text ="[" . File::read($this->getLogsFileName());      
-        $text = rtrim($text,",\n");
+        $text = \rtrim($text,",\n");
         $text .="]\n";
 
-        $logs = json_decode($text,true);
+        $logs = \json_decode($text,true);
       
         return $logs;
     }
