@@ -5,14 +5,12 @@
 
 
 #### Requirements 
-  * PHP 7.1, 7.2, 7.3
+  * PHP 7.1, 7.2, 7.3, 7.4
 
 
 
-#### Install
+#### Installation
 
-```bash
-
+```sh
 composer require arikaim/logger
-
 ```

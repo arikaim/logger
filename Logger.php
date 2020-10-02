@@ -75,7 +75,7 @@ class Logger
      */
     public function __construct($logsDir, AbstractHandler $handler = null, FormatterInterface $formatter = null, $fileName = null) 
     {         
-        $this->fileName = (empty($fileName) == true) ? "errors.log" : $fileName;
+        $this->fileName = (empty($fileName) == true) ? 'errors.log' : $fileName;
         $this->logsDir = $logsDir;      
         $this->enabled = true;
         $this->handler = (empty($handler) == true) ? new StreamHandler($this->getLogsFileName(), MonologLogger::DEBUG) : $handler;
@@ -144,9 +144,9 @@ class Logger
      */
     public function readSystemLogs()
     {       
-        $text ="[" . File::read($this->getLogsFileName());      
+        $text = '[' . File::read($this->getLogsFileName());      
         $text = \rtrim($text,",\n");
-        $text .="]\n";
+        $text .= "]\n";
 
         $logs = \json_decode($text,true);
       
