@@ -66,11 +66,11 @@ class Logger
     /**
      * Constructor
      *
-     * @param string $logsDir
+     * @param string|null $logsDir
      * @param bool $enabled
      * @param string|null $handlerName
      */
-    public function __construct($logsDir, $enabled, $handlerName = Self::DEFAULT_HANDLER) 
+    public function __construct(?string $logsDir, bool $enabled, ?string $handlerName = Self::DEFAULT_HANDLER) 
     {                
         $this->logsDir = $logsDir;      
         $this->enabled = $enabled;
@@ -88,7 +88,7 @@ class Logger
      * @param string $name
      * @return boolean
      */
-    public function isValidHandlerName($name)
+    public function isValidHandlerName(string $name): bool
     {
         return \in_array($name,$this->handerNames);
     }
@@ -98,15 +98,17 @@ class Logger
      *
      * @return string
      */
-    public function getHandelerName()
+    public function getHandelerName(): string
     {
         return $this->handlerName;
     }
 
     /**
      *  Get handler names
+     *  
+     * @return array
      */
-    public function getHandlerNames()
+    public function getHandlerNames(): array
     {
         return $this->handerNames;
     }
@@ -118,7 +120,7 @@ class Logger
      * @return HandlerInterface
      * @throws Exception
      */
-    public function createHandler($name): HandlerInterface
+    public function createHandler(string $name): HandlerInterface
     {
         switch($name) {
             case 'file':
@@ -146,7 +148,7 @@ class Logger
      * @param string $name
      * @return void
      */
-    public function setHandler($name)
+    public function setHandler(string $name): void
     {
         $handler = $this->createHandler($name);
         $this->handlerName = $name;
@@ -160,7 +162,7 @@ class Logger
      * @param array $handlers
      * @return void
      */
-    public function setHandlers(array $handlers)
+    public function setHandlers(array $handlers): void
     {
         $this->logger->setHandlers($handlers);
     }
@@ -171,7 +173,7 @@ class Logger
      * @param string $name
      * @return void
      */
-    public function pushHandler($name)
+    public function pushHandler(string $name): void
     {
         $handler = $this->createHandler($name);
 
@@ -192,7 +194,7 @@ class Logger
      *
      * @return void
      */
-    public function disable()
+    public function disable(): void
     {
         $this->enabled = false;
     }
@@ -202,7 +204,7 @@ class Logger
      *
      * @return array
      */
-    public function getHandlers()
+    public function getHandlers(): array
     {
         return $this->logger->getHandlers();
     }
@@ -212,7 +214,7 @@ class Logger
      *
      * @return string
      */
-    public function getLogsFileName()
+    public function getLogsFileName(): string
     {
         return $this->logsDir;
     }
@@ -222,13 +224,15 @@ class Logger
      *
      * @return bool
      */
-    public function deleteSystemLogs()
+    public function deleteSystemLogs(): bool
     {
         $handlers = $this->getHandlers();
 
         foreach ($handlers as $handler) {
             $this->deleteLogs($handler);
         }  
+
+        return true;
     }
 
     /**
@@ -237,15 +241,14 @@ class Logger
      * @param object $handler
      * @return bool
      */
-    protected function deleteLogs($handler)
+    protected function deleteLogs($handler): bool
     {     
         switch (\get_class($handler)) {
             case 'Monolog\Handler\StreamHandler':
                 return (File::exists($this->getLogsFileName()) == false) ? true : File::delete($this->getLogsFileName());
             
-            case 'Arikaim\Core\Logger\Handler\DbHandler': {
-                return $handler->getLogsStorage()->getQuery()->delete();
-            }            
+            case 'Arikaim\Core\Logger\Handler\DbHandler':
+                return $handler->getLogsStorage()->getQuery()->delete();                      
         }
         
         return false;
@@ -254,9 +257,9 @@ class Logger
     /**
      * Read logs file with paginator
      *
-     * @return void
+     * @return array
      */
-    public function readSystemLogs()
+    public function readSystemLogs(): array
     {       
         $text = '[' . File::read($this->getLogsFileName());      
         $text = \rtrim($text,",\n");
@@ -290,7 +293,7 @@ class Logger
      * @param array $context
      * @return boolean
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, string $message, array $context = [])
     {   
         return ($this->enabled == true) ? $this->logger->log($level,$message,$context) : false;        
     } 
@@ -302,7 +305,7 @@ class Logger
      * @param array $context
      * @return boolean
      */
-    public function error($message, array $context = [])
+    public function error(string $message, array $context = [])
     {      
         return ($this->enabled == true) ? $this->logger->error($message,$context) : false;      
     }
@@ -314,7 +317,7 @@ class Logger
      * @param array $context
      * @return boolean
     */
-    public function info($message, array $context = [])
+    public function info(string $message, array $context = [])
     {
         return ($this->enabled == true) ? $this->logger->info($message,$context) : false; 
     }
@@ -335,8 +338,8 @@ class Logger
      * @param Monolog\Logger $logger
      * @return void
      */
-    public function setLogger($logger)
+    public function setLogger($logger): void
     {
-        return $this->logger = $logger;
+        $this->logger = $logger;
     }
 }
