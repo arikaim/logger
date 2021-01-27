@@ -13,6 +13,7 @@ use Monolog\Logger as MonologLogger;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Formatter\NormalizerFormatter;
 
+use Arikaim\Core\Interfaces\LoggerInterface;
 use Arikaim\Core\Utils\File;
 use Arikaim\Core\Logger\JsonLogsFormatter;
 use Arikaim\Core\Logger\LogsProcessor;
@@ -21,7 +22,7 @@ use Exception;
 /**
  * Logger
  */
-class Logger
+class Logger implements LoggerInterface
 {
     const DEFAULT_HANDLER = 'file';
 
@@ -52,14 +53,14 @@ class Logger
     /**
      * Logs directory
      *
-     * @var string
+     * @var string|null
      */
     private $logsDir;
 
     /**
      * Current handler name
      *
-     * @var string
+     * @var string|null
      */
     private $handlerName;
 
@@ -293,9 +294,9 @@ class Logger
      * @param array $context
      * @return boolean
      */
-    public function log($level, string $message, array $context = [])
+    public function log($level, string $message, array $context = []): bool
     {   
-        return ($this->enabled == true) ? $this->logger->log($level,$message,$context) : false;        
+        return ($this->enabled == true) ? (bool)$this->logger->log($level,$message,$context) : false;        
     } 
 
     /**
@@ -305,9 +306,9 @@ class Logger
      * @param array $context
      * @return boolean
      */
-    public function error(string $message, array $context = [])
+    public function error(string $message, array $context = []): bool
     {      
-        return ($this->enabled == true) ? $this->logger->error($message,$context) : false;      
+        return ($this->enabled == true) ? (bool)$this->logger->error($message,$context) : false;      
     }
 
     /**
@@ -317,9 +318,9 @@ class Logger
      * @param array $context
      * @return boolean
     */
-    public function info(string $message, array $context = [])
+    public function info(string $message, array $context = []): bool
     {
-        return ($this->enabled == true) ? $this->logger->info($message,$context) : false; 
+        return ($this->enabled == true) ? (bool)$this->logger->info($message,$context) : false; 
     }
 
     /**
