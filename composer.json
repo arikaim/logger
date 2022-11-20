@@ -11,9 +11,8 @@
     }],
     "homepage": "http://arikaim.com",
     "require": {
-        "php": ">=7.1",
         "arikaim/utils": "^1.0.0",
-        "monolog/monolog": "1.23.*"
+        "monolog/monolog": "2.8.*"
     },
     "autoload": {       
         "psr-4": {

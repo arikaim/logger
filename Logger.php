@@ -78,8 +78,8 @@ class Logger implements LoggerInterface
 
         $this->logger = new MonologLogger('system');                
         $this->logger->pushProcessor(new LogsProcessor());  
-
-        $handlerName = ($this->isValidHandlerName($handlerName) == true) ? $handlerName : Self::DEFAULT_HANDLER;
+        $handlerName = (empty($handlerName) == true) ? Self::DEFAULT_HANDLER : $handlerName;
+        
         $this->setHandler($handlerName);
     }
 

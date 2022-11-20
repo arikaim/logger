@@ -67,5 +67,4 @@ trait LoggerTrait
     {    
         return (empty($this->logger) == false) ? $this->logger->error($message,$context) : false;             
     }
-
 }

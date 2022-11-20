@@ -30,7 +30,7 @@ class DbHandler extends AbstractProcessingHandler
     /**
      * Constructor
      *
-     * @param [type] $level
+     * @param mixed $level
      * @param boolean $bubble
      */
     public function __construct($level = Logger::DEBUG, $bubble = true)
